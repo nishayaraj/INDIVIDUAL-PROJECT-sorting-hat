@@ -2,22 +2,27 @@ const studentData = [
   {
     id: 1,
     name: "lilly",
+    Expelled: true,
   },
   {
     id: 2,
     name: "Kelly",
+    Expelled: false,
   },
   {
     id: 3,
     name: "Nelly",
+    Expelled: true,
   },
   {
     id: 4,
     name: "Polly",
+    Expelled: false,
   },
   {
     id: 5,
     name: "Stanely",
+    Expelled: false,
   },
 ];
 
@@ -61,15 +66,9 @@ document
             value="Student:"
           />
         </div>
-        <div class="col-auto"> 
-          <label for="inputPassword2" class="visually-hidden">name</label>
-          <input
-            type="password"
-            class="form-control"
-            id="inputPassword2"
-            placeholder="name"
-          />
-        </div>
+        <div class="col">
+    <input type="text" class="form-control" placeholder="Name" aria-label="name">
+  </div>
         <div class="col-auto">
           <button type="submit" class="btn btn-primary mb-3">
             Sort!
