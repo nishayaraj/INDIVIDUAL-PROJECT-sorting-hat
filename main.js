@@ -1,4 +1,3 @@
-
 const houses = ["Ravenclaw", "Gryffindor", "Slytherin", "Hufflepuff"];
 
 const studentData = [];
@@ -11,13 +10,13 @@ const setInnerHtml = (id, htmlString) =>
 
 // utility to assign a random house
 const getStudentHouse = () => {
-    const random = Math.floor(Math.random() * houses.length);
-    return houses[random];
-  }
+  const random = Math.floor(Math.random() * houses.length);
+  return houses[random];
+};
 
 // Default container to be shown
 const sortingCardContainer = () => {
-  const domstring = `<div id="sortingCardIntroInner">
+  const domString = `<div id="sortingCardIntroInner">
       <div class="card text-center">
         <div class="card-body">
           <h5 class="card-title">The Sorting Hat</h5>
@@ -33,17 +32,37 @@ const sortingCardContainer = () => {
         </div>
       </div>
     </div>`;
-  setInnerHtml("sortingCardIntro", domstring);
+  setInnerHtml("sortingCardIntro", domString);
 };
 
 sortingCardContainer();
 
-const renderStudentIntoHouse = () => {
+const renderStudentIntoHouse = (houseName) => {
   let studentDataCardHtml = "";
 
   if (studentData.length !== 0) {
     studentData.forEach((student) => {
-      studentDataCardHtml += `<div>
+      if (houseName && houseName !== "") {
+        if (houseName === student.house) {
+          studentDataCardHtml += `<div>
+            <div class="card mb-3" style="max-width: 540px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="https://static.vecteezy.com/system/resources/thumbnails/000/511/962/small/57_Student.jpg" class="img-fluid rounded-start" alt="student icon images">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">${student.name}</h5>
+                    <p class="card-text">${student.house}</p>
+                    <button id="expelBtn-${student.id}">Expel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        }
+      } else {
+        studentDataCardHtml += `<div>
       <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
           <div class="col-md-4">
@@ -59,6 +78,7 @@ const renderStudentIntoHouse = () => {
         </div>
       </div>
     </div>`;
+      }
     });
 
     setInnerHtml("sortedFirstYearsCard", studentDataCardHtml);
@@ -67,6 +87,8 @@ const renderStudentIntoHouse = () => {
 
 renderStudentIntoHouse();
 
+
+// render expelled students from expelled data source
 const renderExpelledStudents = () => {
   let studentDataCardHtml = "";
 
@@ -76,7 +98,7 @@ const renderExpelledStudents = () => {
       <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
           <div class="col-md-4">
-            <img src="https://image.shutterstock.com/z/stock-vector-student-vector-icon-flat-red-symbol-pictogram-is-isolated-on-a-black-background-designed-for-web-553952884.jpg" class="img-fluid rounded-start" alt="student icon images">
+            <img src="https://image.shutterstock.com/z/stock-vector-student-vector-icon-flat-red-symbol-pictogram-is-isolated-on-a-black-background-designed-for-web-553952884.jpg" class="img-fluid rounded-start" alt="student icon images red">
           </div>
           <div class="col-md-8">
             <div class="card-body">
@@ -96,19 +118,23 @@ const renderExpelledStudents = () => {
 
 renderExpelledStudents();
 
-document.getElementById("sortedFirstYearsCard").addEventListener("click", (event) => {
-  console.log(event);
-  if(event.target.id.includes("expelBtn-")){
-    const idToRemove = event.target.id.replace("expelBtn-", "");
-    const indexOfStudentToExpel = studentData.findIndex(student => student.id == idToRemove);
+document
+  .getElementById("sortedFirstYearsCard")
+  .addEventListener("click", (event) => {
+    console.log(event);
+    if (event.target.id.includes("expelBtn-")) {
+      const idToRemove = event.target.id.replace("expelBtn-", "");
+      const indexOfStudentToExpel = studentData.findIndex(
+        (student) => student.id == idToRemove
+      );
 
-    expelledStudentData.push(studentData[indexOfStudentToExpel]);
-    studentData.splice(indexOfStudentToExpel, 1);
+      expelledStudentData.push(studentData[indexOfStudentToExpel]);
+      studentData.splice(indexOfStudentToExpel, 1);
 
-    renderExpelledStudents();
-    renderStudentIntoHouse();
-  }
-});
+      renderExpelledStudents();
+      renderStudentIntoHouse();
+    }
+  });
 
 // show sorting form:
 document
@@ -145,14 +171,16 @@ document
       console.log(studentNameValue);
 
       const studentObject = {
-          id: Math.floor(Math.random() * 10),
-          name: studentNameValue,
-          house: getStudentHouse(),
-        };
-      
-        studentData.push(studentObject);
-        document.getElementById("studentName").value = "";
-        renderStudentIntoHouse();
+        id: Math.floor(Math.random() * 10),
+        name: studentNameValue,
+        house: getStudentHouse(),
+      };
 
+      studentData.push(studentObject);
+      document.getElementById("studentName").value = "";
+      renderStudentIntoHouse();
     });
   });
+
+//house filter
+const houseFilterBtn = (houseName) => renderStudentIntoHouse(houseName);
