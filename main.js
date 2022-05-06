@@ -71,7 +71,7 @@ const showSortingFormContainer = () => {
     });
 };
 
-// register sort to house button click
+// register sort to house button click (Assigning to random house)
 const registerSortToHousesButtonClick = () => {
   document.getElementById("sortToHouses").addEventListener("click", () => {
     const studentNameValue = document.getElementById("studentName").value;
@@ -137,6 +137,26 @@ const renderStudentIntoHouse = (houseName) => {
   }
 };
 
+// add event listener for expel button click
+const addExpelButtonEventListener = () => {
+  document
+    .getElementById("sortedFirstYearsCard")
+    .addEventListener("click", (event) => {
+      if (event.target.id.includes("expelBtn-")) {
+        const idToRemove = event.target.id.replace("expelBtn-", "");
+        const indexOfStudentToExpel = studentData.findIndex(
+          (student) => student.id == idToRemove
+        );
+
+        expelledStudentData.push(studentData[indexOfStudentToExpel]);
+        studentData.splice(indexOfStudentToExpel, 1);
+
+        renderExpelledStudents();
+        renderStudentIntoHouse();
+      }
+    });
+};
+
 // render expelled students from expelled data source
 const renderExpelledStudents = () => {
   let studentDataCardHtml = "";
@@ -163,26 +183,6 @@ const renderExpelledStudents = () => {
 
     setInnerHtml("voldysArmyCard", studentDataCardHtml);
   }
-};
-
-// add event listener for expel button click
-const addExpelButtonEventListener = () => {
-  document
-    .getElementById("sortedFirstYearsCard")
-    .addEventListener("click", (event) => {
-      if (event.target.id.includes("expelBtn-")) {
-        const idToRemove = event.target.id.replace("expelBtn-", "");
-        const indexOfStudentToExpel = studentData.findIndex(
-          (student) => student.id == idToRemove
-        );
-
-        expelledStudentData.push(studentData[indexOfStudentToExpel]);
-        studentData.splice(indexOfStudentToExpel, 1);
-
-        renderExpelledStudents();
-        renderStudentIntoHouse();
-      }
-    });
 };
 
 //house filter button click
