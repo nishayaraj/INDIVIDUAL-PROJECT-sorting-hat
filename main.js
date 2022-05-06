@@ -1,23 +1,24 @@
-const houses = ["Ravenclaw", "Gryffindor", "Slytherin", "Hufflepuff"];
+const houses = ["ravenclaw", "gryffindor", "slytherin", "hufflepuff"];
 
 const studentData = [];
 
 const expelledStudentData = [];
 
-// utility to add inner html
+// UTILITIES
+
+// 1. utility to add inner html
 const setInnerHtml = (id, htmlString) =>
   (document.getElementById(id).innerHTML = htmlString);
 
-// utility to assign a random house
-const getStudentHouse = () => {
+// 2. utility to assign a random house
+const assignStudentHouse = () => {
   const random = Math.floor(Math.random() * houses.length);
   return houses[random];
 };
 
-// Default container to be shown
-const sortingCardContainer = () => {
-  const domString =
-    `<div id="sortingCardIntroInner" class="cardContainer">
+// Show sorting app banner
+const showSortingAppBanner = () => {
+  const domString = `<div id="sortingCardIntroInner" class="cardContainer">
       <div class="cardContainer card text-center">
         <div class="card-body">
           <h1 class="card-title"><b>The Sorting Hat</b></h1>
@@ -37,8 +38,57 @@ const sortingCardContainer = () => {
   setInnerHtml("sortingCardIntro", domString);
 };
 
-sortingCardContainer();
+// show form to add student
+const showSortingFormContainer = () => {
+  document
+    .getElementById("showSortingFormButton")
+    .addEventListener("click", () => {
+      const domString = `<div id="SortingForm">
+      <form class="row g-3">
+        <div class="col-auto">
+          <label for="staticEmail2" class="visually-hidden">student</label>
+          <input
+            type="text"
+            readonly
+            class="form-control-plaintext"
+            id="staticEmail2"
+            value="Student:"
+          />
+        </div>
+        <div class="col">
+    <input type="text" id="studentName" class="form-control" placeholder="Name" aria-label="name">
+  </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-3" id="sortToHouses">
+            Sort!
+          </button>
+        </div>
+      </form>
+    </div>`;
 
+      setInnerHtml("sortingFormContainer", domString);
+      registerSortToHousesButtonClick();
+    });
+};
+
+// register sort to house button click
+const registerSortToHousesButtonClick = () => {
+  document.getElementById("sortToHouses").addEventListener("click", () => {
+    const studentNameValue = document.getElementById("studentName").value;
+
+    const studentObject = {
+      id: Math.floor(Math.random() * 10),
+      name: studentNameValue,
+      house: assignStudentHouse(),
+    };
+
+    studentData.push(studentObject);
+    document.getElementById("studentName").value = "";
+    renderStudentIntoHouse();
+  });
+};
+
+// function used to display all students or display filtered students
 const renderStudentIntoHouse = (houseName) => {
   let studentDataCardHtml = "";
 
@@ -87,9 +137,6 @@ const renderStudentIntoHouse = (houseName) => {
   }
 };
 
-renderStudentIntoHouse();
-
-
 // render expelled students from expelled data source
 const renderExpelledStudents = () => {
   let studentDataCardHtml = "";
@@ -118,71 +165,43 @@ const renderExpelledStudents = () => {
   }
 };
 
-renderExpelledStudents();
+// add event listener for expel button click
+const addExpelButtonEventListener = () => {
+  document
+    .getElementById("sortedFirstYearsCard")
+    .addEventListener("click", (event) => {
+      if (event.target.id.includes("expelBtn-")) {
+        const idToRemove = event.target.id.replace("expelBtn-", "");
+        const indexOfStudentToExpel = studentData.findIndex(
+          (student) => student.id == idToRemove
+        );
 
-document
-  .getElementById("sortedFirstYearsCard")
-  .addEventListener("click", (event) => {
-    console.log(event);
-    if (event.target.id.includes("expelBtn-")) {
-      const idToRemove = event.target.id.replace("expelBtn-", "");
-      const indexOfStudentToExpel = studentData.findIndex(
-        (student) => student.id == idToRemove
-      );
+        expelledStudentData.push(studentData[indexOfStudentToExpel]);
+        studentData.splice(indexOfStudentToExpel, 1);
 
-      expelledStudentData.push(studentData[indexOfStudentToExpel]);
-      studentData.splice(indexOfStudentToExpel, 1);
+        renderExpelledStudents();
+        renderStudentIntoHouse();
+      }
+    });
+};
 
-      renderExpelledStudents();
-      renderStudentIntoHouse();
+//house filter button click
+const registerHouseFilterBtnClick = () => {
+  document.addEventListener("click", (event) => {
+    if (event.target.id.includes("HouseFilterBtn")) {
+      const filterHouseName = event.target.id.replace("HouseFilterBtn", "");
+      renderStudentIntoHouse(filterHouseName);
     }
   });
+};
 
-// show sorting form:
-document
-  .getElementById("showSortingFormButton")
-  .addEventListener("click", () => {
-    const domstring = `<div id="SortingForm">
-      <form class="row g-3">
-        <div class="col-auto">
-          <label for="staticEmail2" class="visually-hidden">student</label>
-          <input
-            type="text"
-            readonly
-            class="form-control-plaintext"
-            id="staticEmail2"
-            value="Student:"
-          />
-        </div>
-        <div class="col">
-    <input type="text" id="studentName" class="form-control" placeholder="Name" aria-label="name">
-  </div>
-        <div class="col-auto">
-          <button type="submit" class="btn btn-primary mb-3" id="sortToHouses">
-            Sort!
-          </button>
-        </div>
-      </form>
-    </div>`;
+const startApp = () => {
+  showSortingAppBanner();
+  showSortingFormContainer();
+  renderStudentIntoHouse();
+  renderExpelledStudents();
+  addExpelButtonEventListener();
+  registerHouseFilterBtnClick();
+};
 
-    setInnerHtml("sortingFormContainer", domstring);
-
-    // register sort function
-    document.getElementById("sortToHouses").addEventListener("click", () => {
-      const studentNameValue = document.getElementById("studentName").value;
-      console.log(studentNameValue);
-
-      const studentObject = {
-        id: Math.floor(Math.random() * 10),
-        name: studentNameValue,
-        house: getStudentHouse(),
-      };
-
-      studentData.push(studentObject);
-      document.getElementById("studentName").value = "";
-      renderStudentIntoHouse();
-    });
-  });
-
-//house filter
-const houseFilterBtn = (houseName) => renderStudentIntoHouse(houseName);
+startApp();
