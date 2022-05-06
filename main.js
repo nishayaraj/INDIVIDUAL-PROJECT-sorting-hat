@@ -16,8 +16,9 @@ const getStudentHouse = () => {
 
 // Default container to be shown
 const sortingCardContainer = () => {
-  const domString = `<div id="sortingCardIntroInner">
-      <div class="card text-center">
+  const domString =
+    `<div id="sortingCardIntroInner" class="cardContainer">
+      <div class="cardContainer card text-center">
         <div class="card-body">
           <h1 class="card-title"><b>The Sorting Hat</b></h1>
           <img src="https://www.ajc.com/resizer/wxDSY-p7kk0Q1lxejmryhdWnJds=/814x458/cloudfront-us-east-1.images.arcpublishing.com/ajc/TE2SYSUPX7MLF2EK3KLRQILO4A.jpg" alt="Sorting hat from HP" width="500" height="400">
@@ -27,7 +28,7 @@ const sortingCardContainer = () => {
             and thin. So put me on and you will know Which House you should be in
             !!!"</b></em>
           </p>
-          <a href="#" id="showSortingFormButton" class="btn btn-primary">
+          <a href="#" id="showSortingFormButton" class="btn btn-dark">
             Begin Sorting
           </a>
         </div>

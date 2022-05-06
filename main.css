@@ -6,3 +6,7 @@ margin: 10px;
 .card-text{
   margin-top: 10px;
 }
+
+#sortingCardIntroInner .cardContainer {
+  background-color:rgb(127, 101, 67);
+}
