@@ -19,13 +19,13 @@ const sortingCardContainer = () => {
   const domString = `<div id="sortingCardIntroInner">
       <div class="card text-center">
         <div class="card-body">
-          <h3 class="card-title"><b>The Sorting Hat</b></h3>
+          <h1 class="card-title"><b>The Sorting Hat</b></h1>
           <img src="https://www.ajc.com/resizer/wxDSY-p7kk0Q1lxejmryhdWnJds=/814x458/cloudfront-us-east-1.images.arcpublishing.com/ajc/TE2SYSUPX7MLF2EK3KLRQILO4A.jpg" alt="Sorting hat from HP" width="500" height="400">
           <p class="card-text">
-           <em> "I've done this job for centuries. For I'm the famous Sorting Hat
+           <em> <b>"I've done this job for centuries. For I'm the famous Sorting Hat
             I've sorted high, I've sorted low, I've done the job through thick
             and thin. So put me on and you will know Which House you should be in
-            !!!"</em>
+            !!!"</b></em>
           </p>
           <a href="#" id="showSortingFormButton" class="btn btn-primary">
             Begin Sorting
